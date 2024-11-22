@@ -1,0 +1,84 @@
+<div class="inventory-dashboard">
+    <h1>Inventory Dashboard</h1>
+  
+    <!-- Summary Section -->
+    <div class="summary">
+      <p>Total Items: {{ totalItems }}</p>
+      <p>Low Stock Items: {{ lowStockItems }}</p>
+    </div>
+  
+    <!-- Add Item Button -->
+    <div class="actions">
+      <button (click)="addItem()">Add Item</button>
+    </div>
+  
+    <!-- Inventory List Section -->
+    <div class="inventory-list">
+      <h2>Inventory List</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Item Name</th>
+            <th>Quantity</th>
+            <th>Threshold</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of inventory">
+            <td>{{ item.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.threshold }}</td>
+            <td>
+              <button (click)="editItem(item.id)">Edit</button>
+              <button (click)="deleteItem(item.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Low-Stock Alerts Section -->
+    <div class="low-stock-alerts">
+      <h3>Low Stock Alerts</h3>
+      <ul>
+        <li *ngFor="let item of inventory">
+          <span *ngIf="item.quantity <= item.threshold">{{ item.name }} (Low Stock)</span>
+        </li>
+      </ul>
+    </div>
+  
+    <!-- Stock Movements Section -->
+    <div class="stock-movements">
+      <h3>Stock Movements</h3>
+      <ul>
+        <li *ngFor="let movement of stockMovements">
+          <p>Item ID: {{ movement.itemId }}</p>
+          <p>Type: {{ movement.type }}</p>
+          <p>Quantity: {{ movement.quantity }}</p>
+          <p>Date: {{ movement.date | date:'short' }}</p>
+        </li>
+      </ul>
+    </div>
+  
+    <!-- New Stock Movement Form -->
+    <div class="new-stock-movement">
+      <h3>Record New Stock Movement</h3>
+      <form (ngSubmit)="recordStockMovement()">
+        <label for="itemId">Item ID:</label>
+        <input type="number" id="itemId" [(ngModel)]="newMovement.itemId" name="itemId" required />
+  
+        <label for="type">Movement Type:</label>
+        <select id="type" [(ngModel)]="newMovement.type" name="type" required>
+          <option value="inbound">Inbound</option>
+          <option value="outbound">Outbound</option>
+        </select>
+  
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" [(ngModel)]="newMovement.quantity" name="quantity" required />
+  
+        <button type="submit">Record Movement</button>
+      </form>
+    </div>
+  </div>
+  
